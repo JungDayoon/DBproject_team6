@@ -3,8 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 </head>
-<body>
+<input>
+<input type="button" value=""/>
 </body>
 </html>
+
+
+<%--JSP는 서버사이드 렌더링--%>
+<%--javascript는 클라이언트 사이드 렌더링--%>
