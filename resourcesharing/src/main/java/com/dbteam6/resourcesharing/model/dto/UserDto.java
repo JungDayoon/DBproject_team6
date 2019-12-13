@@ -1,14 +1,20 @@
 package com.dbteam6.resourcesharing.model.dto;
 
+import net.minidev.json.JSONObject;
+
 public class UserDto {
     private int uuid;
     private String uname;
     private String pwd;
-    private int admin;
+    private boolean admin;
     private int did;
 
-    public UserDto(int _uuid){
+    public UserDto(int _uuid, String _uname, String _pwd, boolean _admin, int _did){
         this.uuid = _uuid;
+        this.uname = _uname;
+        this.pwd = _pwd;
+        this.admin = _admin;
+        this.did = _did;
     }
 
     public int getUuid() {
@@ -35,11 +41,11 @@ public class UserDto {
         this.pwd = pwd;
     }
 
-    public int getAdmin() {
+    public boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(int admin) {
+    public void setAdmin(boolean admin) {
         this.admin = admin;
     }
 
@@ -47,7 +53,15 @@ public class UserDto {
         return did;
     }
 
-    public void setDid(int did) {
-        this.did = did;
+    public void setDid(int did) { this.did = did;
+    }
+    public JSONObject toJSONObject(){
+        JSONObject jObj = new JSONObject();
+        jObj.put("uuid", this.uuid);
+        jObj.put("uname", this.uname);
+        jObj.put("pwd", this.pwd);
+        jObj.put("admin", this.admin);
+        jObj.put("did", this.did);
+        return jObj;
     }
 }

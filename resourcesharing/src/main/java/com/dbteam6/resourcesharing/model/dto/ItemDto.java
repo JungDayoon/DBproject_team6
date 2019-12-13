@@ -1,5 +1,7 @@
 package com.dbteam6.resourcesharing.model.dto;
 
+import net.minidev.json.JSONObject;
+
 public class ItemDto {
     private int iid;
     private String iname;
@@ -7,8 +9,12 @@ public class ItemDto {
     private int remain_count;
     private int did;
 
-    public ItemDto(int _iid){
+    public ItemDto(int _iid, String _iname, int _cid, int _count, int _did) {
         this.iid = _iid;
+        this.iname = _iname;
+        this.category_cid = _cid;
+        this.remain_count = _count;
+        this.did = _did;
     }
 
     public int getIid() {
@@ -49,5 +55,15 @@ public class ItemDto {
 
     public void setDid(int did) {
         this.did = did;
+    }
+
+    public JSONObject toJSONObject(){
+        JSONObject jObj = new JSONObject();
+        jObj.put("iid", this.iid);
+        jObj.put("iname", this.iname);
+        jObj.put("category_cid", this.category_cid);
+        jObj.put("remain_count", this.remain_count);
+        jObj.put("did", this.did);
+        return jObj;
     }
 }
