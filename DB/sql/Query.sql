@@ -45,3 +45,6 @@ delete from borrow where borrow_uuid = 2015114398 and borrow_iid = 1;
 /*물품의 수량 수정, 이미 존재하는 Item이라면 Remain_count Update, 새로운 Item이라면 Insert*/
 exec update_item('아두이노 마이크로', 100, '컴퓨터학부', '아두이노');   
 exec update_item('테스트테스트', 100, '컴퓨터학부', '아두이노');
+
+/*유저 ID를 주었을때 빌린 물건 정보 출력*/
+Select i.iname, d.dname ,b.count, b.start_date, b.end_date from borrow b, item i, department d where b.borrow_uuid = 567 and b.borrow_iid = i.iid and d.did = i.did;
