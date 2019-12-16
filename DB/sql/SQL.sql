@@ -28,7 +28,7 @@ CREATE TABLE category(
 CREATE TABLE item(
   iid INT,  /*아이템의 식별자(PRIMARY KEY)*/
   iname VARCHAR(45), /*아이템의 이름*/
-  category_cid INT, /*아이템의 카테고리 식별자(FOREIGN KEY)*/
+  category_cid INT not null, /*아이템의 카테고리 식별자(FOREIGN KEY)*/
   remain_count INT, /*아이템의 남은 수량*/
   did INT, /*아이템의 소속 학과 식별자(FOREIGN KEY)*/
   
