@@ -50,3 +50,29 @@ BEGIN
     END IF;
 END;
 /
+
+-- 사용자가 몇 개의 물건을 빌려갔는지 검사
+create or replace function users_borrow_count(uid int)
+return int
+is
+    cnt int;   
+begin
+    select count(*) into cnt 
+    from borrow 
+    where (borrow_uuid = uid);
+    return cnt;
+end;
+/
+
+-- 반납기간이 지난 물건이 있는지 검사
+create or replace function time_limit(uid int)
+return int
+is 
+    cnt int;
+begin
+    select count(*) into cnt
+    from borrow
+    where (borrow_uuid = uid and end_date < SYSDATE);
+    return cnt;
+end;
+/
