@@ -8,13 +8,22 @@ public class UserDto {
     private String pwd;
     private boolean admin;
     private int did;
+    private String dname;
 
-    public UserDto(int _uuid, String _uname, String _pwd, boolean _admin, int _did){
+    public UserDto(int _uuid, String _uname, String _pwd, boolean _admin, int _did) {
         this.uuid = _uuid;
         this.uname = _uname;
         this.pwd = _pwd;
         this.admin = _admin;
         this.did = _did;
+    }
+
+    public void setDname(String dname) {
+        this.dname = dname;
+    }
+
+    public String getDname() {
+        return dname;
     }
 
     public int getUuid() {
@@ -53,15 +62,20 @@ public class UserDto {
         return did;
     }
 
-    public void setDid(int did) { this.did = did;
+    public void setDid(int did) {
+        this.did = did;
     }
-    public JSONObject toJSONObject(){
+
+    public JSONObject toJSONObject() {
         JSONObject jObj = new JSONObject();
         jObj.put("uuid", this.uuid);
         jObj.put("uname", this.uname);
         jObj.put("pwd", this.pwd);
         jObj.put("admin", this.admin);
         jObj.put("did", this.did);
+        if (dname.length() != 0) {
+            jObj.put("dname", this.dname);
+        }
         return jObj;
     }
 }

@@ -8,11 +8,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
     @GetMapping("/")
-    public String Index(){
+    public String Index() {
         return "index";
     }
-    @GetMapping("/main")
-    public String loginPage(){
-        return "main";
+
+    @GetMapping("/main_page")
+    public String mainPage() {
+        return "main_page";
+    }
+    
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
+    }
+
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "mypage";
     }
 }

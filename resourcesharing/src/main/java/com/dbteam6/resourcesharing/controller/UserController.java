@@ -1,6 +1,7 @@
 package com.dbteam6.resourcesharing.controller;
 
 import com.dbteam6.resourcesharing.model.dao.DeptDao;
+import com.dbteam6.resourcesharing.model.dao.ItemDao;
 import com.dbteam6.resourcesharing.model.dao.UserDao;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class UserController {
     UserDao uDao = UserDao.getInstance();
-
+    ItemDao iDao = ItemDao.getInstance();
     /*GET USERS*/
     @ResponseBody
     @GetMapping("/users")
@@ -22,17 +23,24 @@ public class UserController {
     @ResponseBody
     @GetMapping("/users/{uuid}")
     public JSONObject getUserById(@PathVariable("uuid") int uuid) {
-        JSONArray tempArr = uDao.findByCondition("uuid = " + uuid);
+        JSONArray tempArr = uDao.getUserInfoById(uuid);
         if (tempArr.isEmpty()) {
             return null;
         }
         return (JSONObject) tempArr.get(0);
     }
 
+    @ResponseBody
+    @GetMapping("/users/{uuid}/myitems")
+    public JSONArray getMyItem(@PathVariable("uuid") int uuid){
+        return iDao.getOnesItems(uuid);
+    }
+
     /* CREATE USERS */
     @ResponseBody
     @PostMapping("/users/{uuid}/{uname}/{pwd}/{major}")
     public int addUser(@PathVariable("uuid") int uuid, @PathVariable("uname") String uname, @PathVariable("pwd") String pwd, @PathVariable("major") String major) {
+        System.out.println("@ REQUEST : [id]" + uuid + "try to signup");
         return uDao.addUser(uuid, uname, pwd, major);
     }
 

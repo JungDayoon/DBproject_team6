@@ -25,6 +25,7 @@ public class UserDao extends Dao {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 UserDto user = new UserDto(rs.getInt("uuid"), rs.getString("uname"), rs.getString("pwd"), rs.getBoolean("admin"), rs.getInt("did"));
+                user.setDname(rs.getString("dname"));
                 jsonResults.add(user.toJSONObject());
             }
         } catch (SQLException e) {
@@ -34,23 +35,33 @@ public class UserDao extends Dao {
     }
 
     public JSONArray findAll() {
-        String query = "SELECT * FROM users";
+        String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
+                "FROM users u, department d " +
+                "WHERE u.did = d.did";
         return executeQuery(query);
     }
 
     public JSONArray findByCondition(String condition) {
-        String query = "SELECT * FROM users WHERE " + condition;
+        String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
+                "FROM users u, department d " +
+                "WHERE u.did = d.did and " + condition;
         return executeQuery(query);
     }
 
+    public JSONArray getUserInfoById(int uuid){
+        String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
+                "FROM users u, department d " +
+                "WHERE u.did = d.did and u.uuid="+uuid;
+        return executeQuery(query);
+    }
     public int addUser(int uuid, String uname, String pwd, String major) {
-        String sql = "INSERT INTO users"
-                + "VALUES ("
-                + uuid + ","
-                + uname + ","
-                + pwd + ","
+        String sql = "INSERT INTO users(uuid,uname,pwd,admin,did) "
+                + "VALUES("
+                + uuid + ",'"
+                + uname + "','"
+                + pwd + "',"
                 + "0 ,"
-                + "(SELECT did FROM department WHERE dname=" + major +")"
+                + "(SELECT did FROM department WHERE dname='" + major +"')"
                 + ")";
         return executeSQL(sql);
     }

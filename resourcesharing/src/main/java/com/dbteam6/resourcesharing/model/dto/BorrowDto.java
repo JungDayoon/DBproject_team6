@@ -1,28 +1,34 @@
 package com.dbteam6.resourcesharing.model.dto;
 
+import net.minidev.json.JSONObject;
+
 public class BorrowDto {
-    private int burrow_uuid;
-    private int burrow_iid;
+    private int borrow_uuid;
+    private int borrow_iid;
     private int count;
     private String start_date;
     private String end_date;
 
-    public BorrowDto(int _burrow_uuid, int _burrow_iid){
-        this.burrow_uuid = _burrow_uuid;
-        this.burrow_iid = _burrow_iid;
+
+    public BorrowDto(int borrow_uuid, int borrow_iid, int count, String start_date, String end_date) {
+        this.borrow_uuid = borrow_uuid;
+        this.borrow_iid = borrow_iid;
+        this.count = count;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     public int getBurrow_uuid() {
-        return burrow_uuid;
+        return borrow_uuid;
     }
 
     public int getBurrow_iid() {
-        return burrow_iid;
+        return borrow_iid;
     }
 
-    public void setBurrow_id(int burrow_uuid, int burrow_iid) {
-        this.burrow_uuid = burrow_uuid;
-        this.burrow_iid = burrow_iid;
+    public void setBurrow_id(int borrow_uuid, int borrow_iid) {
+        this.borrow_uuid = borrow_uuid;
+        this.borrow_iid = borrow_iid;
     }
 
     public int getCount() {
@@ -47,5 +53,14 @@ public class BorrowDto {
 
     public void setEnd_date(String end_date) {
         this.end_date = end_date;
+    }
+    public JSONObject toJSONObject(){
+        JSONObject jObj = new JSONObject();
+        jObj.put("borrow_uuid", this.borrow_uuid);
+        jObj.put("borrow_iid", this.borrow_iid);
+        jObj.put("count", this.count);
+        jObj.put("start_date", this.start_date);
+        jObj.put("end_date", this.end_date);
+        return jObj;
     }
 }

@@ -42,7 +42,15 @@ public class DeptDao extends Dao {
     }
 
     public JSONArray findByCondition(String condition) {
-        String query = "SELECt * FROM users WHERE " + condition;
+        String query = "SELECT * FROM users WHERE " + condition;
+        return executeQuery(query);
+    }
+
+    public JSONArray getDeptOfCategories(String category_name){
+        String query = "SELECT d.did, d.dname " +
+                "FROM DEPARTMENT d, CATEGORY c, ITEM i " +
+                "WHERE c.cid = i.category_cid and i.did = d.did and c.cname='"+ category_name + "' " +
+                "GROUP BY d.dname;";
         return executeQuery(query);
     }
 

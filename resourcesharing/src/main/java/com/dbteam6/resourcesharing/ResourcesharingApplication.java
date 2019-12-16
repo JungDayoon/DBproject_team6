@@ -9,5 +9,4 @@ public class ResourcesharingApplication {
     public static void main(String[] args) {
         SpringApplication.run(ResourcesharingApplication.class, args);
     }
-
 }

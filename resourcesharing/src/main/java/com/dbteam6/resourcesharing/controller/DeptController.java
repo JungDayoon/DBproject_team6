@@ -21,13 +21,20 @@ public class DeptController {
 
     @ResponseBody
     @GetMapping("/depts/{did}")
-    public JSONObject getUserById(@PathVariable("did") int did){
-        JSONArray tempArr = dDao.findByCondition("uuid = " + did);
+    public JSONObject getDeptById(@PathVariable("did") int did){
+        JSONArray tempArr = dDao.findByCondition("did = " + did);
         if (tempArr.isEmpty()){
             return null;
         }
         return (JSONObject) tempArr.get(0);
     }
+    @ResponseBody
+    @GetMapping("/depts/have/{category_name}")
+    public JSONArray getDeptOfCategory(@PathVariable("category_name") String cname){
+        JSONArray depts = dDao.getDeptOfCategories(cname);
+        return depts;
+    }
+
 
 }
 
