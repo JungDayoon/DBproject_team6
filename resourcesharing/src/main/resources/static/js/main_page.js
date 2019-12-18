@@ -53,8 +53,6 @@ var renderTable = async function (uri) {
 
 renderTable("/items");
 
-
-
 /* 리스너 */
 $("#mypage").click((event) => {
     console.log("main page clicked");
@@ -70,7 +68,7 @@ $(".category_list").click((event) => {
 
 $(".dept_list").change((event) =>{
     dept_name = event.currentTarget.id;
-    if($(`#${dept_name}`).children().is(":checked")){
+    if($(`#${dept_name}`).is(":checked")){
         $(`.${dept_name}`).show();
     }else {
         $(`.${dept_name}`).hide();

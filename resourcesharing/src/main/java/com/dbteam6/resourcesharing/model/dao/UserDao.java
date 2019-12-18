@@ -22,12 +22,14 @@ public class UserDao extends Dao {
     private JSONArray executeQuery(String query) {
         JSONArray jsonResults = new JSONArray();
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            holdConnection();
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 UserDto user = new UserDto(rs.getInt("uuid"), rs.getString("uname"), rs.getString("pwd"), rs.getBoolean("admin"), rs.getInt("did"));
                 user.setDname(rs.getString("dname"));
                 jsonResults.add(user.toJSONObject());
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }

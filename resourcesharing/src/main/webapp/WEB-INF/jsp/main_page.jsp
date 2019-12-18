@@ -73,10 +73,12 @@
                 JSONArray departments = dDao.findAll();
                 for(Object dept : departments){
                     JSONObject eachDept = (JSONObject) dept;
-                    out.println("<li class='list-group-item'><div class='checkbox icheck-primary dept_list' id = '"+eachDept.get("dname")+"'><input type='checkbox' checked id='primary' /><label for='primary'>"+eachDept.get("dname")+"</label></div></li>");
+                    out.println("<li class='list-group-item'>"+
+                        "<div class='custom-control custom-checkbox dept-list'>"+
+                            "<input type='checkbox' checked id= '" + eachDept.get("dname") + "' class='custom-control-input'/>" + 
+                            "<label class='custom-control-label' for='" + eachDept.get("dname") + "'>" + eachDept.get("dname") +"</label></div></li>");
                 }
             %>
-                
         </ul>
     </div>
 

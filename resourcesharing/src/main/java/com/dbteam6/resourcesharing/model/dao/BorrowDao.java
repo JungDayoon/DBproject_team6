@@ -1,10 +1,8 @@
 package com.dbteam6.resourcesharing.model.dao;
 
 import com.dbteam6.resourcesharing.model.dto.BorrowDto;
-import com.dbteam6.resourcesharing.model.dto.UserDto;
 import net.minidev.json.JSONArray;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BorrowDao extends Dao {
@@ -25,11 +23,13 @@ public class BorrowDao extends Dao {
     private JSONArray executeQuery(String query) {
         JSONArray jsonResults = new JSONArray();
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            holdConnection();
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 BorrowDto borrow = new BorrowDto(rs.getInt("borrow_uuid"), rs.getInt("borrow_iid"), rs.getInt("count"), rs.getString("start_date"), rs.getString("end_date"));
                 jsonResults.add(borrow.toJSONObject());
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }

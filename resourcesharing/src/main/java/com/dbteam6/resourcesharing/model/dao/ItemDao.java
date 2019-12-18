@@ -1,12 +1,9 @@
 package com.dbteam6.resourcesharing.model.dao;
 
 import com.dbteam6.resourcesharing.model.dto.ItemDto;
-import com.dbteam6.resourcesharing.model.dto.UserDto;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ItemDao extends Dao {
@@ -27,11 +24,13 @@ public class ItemDao extends Dao {
     private JSONArray executeQuery(String query) {
         JSONArray jsonResults = new JSONArray();
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            holdConnection();
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 ItemDto item = new ItemDto(rs.getInt("iid"), rs.getString("iname"), rs.getInt("category_cid"), rs.getInt("remain_count"), rs.getInt("did"));
                 jsonResults.add(item.toJSONObject());
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }
@@ -54,7 +53,8 @@ public class ItemDao extends Dao {
                 "FROM borrow b, item i, department d " +
                 "WHERE b.borrow_uuid = " + uuid + " and b.borrow_iid = i.iid and d.did = i.did";
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            holdConnection();
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 JSONObject eachItem = new JSONObject();
                 eachItem.put("iname", rs.getString("iname"));
@@ -64,6 +64,7 @@ public class ItemDao extends Dao {
                 eachItem.put("end_date", rs.getString("end_date"));
                 items.add(eachItem);
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.err.println("! SQL ERROR (getOnesItem fail) :" + e.getMessage());
         }
@@ -79,34 +80,38 @@ public class ItemDao extends Dao {
                 "FROM DEPARTMENT d, CATEGORY c, ITEM i " +
                 "WHERE c.cid = i.category_cid and i.did = d.did and c.cname='" + cname + "'";
         try {
-            ResultSet rs = stmt.executeQuery(query);
-            while(rs.next()){
-                JSONObject eachItem= new JSONObject();
+            holdConnection();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                JSONObject eachItem = new JSONObject();
                 eachItem.put("dname", rs.getString("dname"));
                 eachItem.put("iname", rs.getString("iname"));
                 eachItem.put("count", rs.getInt("remain_count"));
                 items.add(eachItem);
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.err.println("! SQL ERROR (getItemsOfCategory) : " + e.getMessage());
         }
         return items;
     }
 
-    public JSONArray getAllItems(){
+    public JSONArray getAllItems() {
         JSONArray items = new JSONArray();
         String query = "SELECT d.dname, i.iname, i.remain_count " +
                 "FROM DEPARTMENT d, ITEM i " +
                 "WHERE i.did = d.did";
         try {
-            ResultSet rs = stmt.executeQuery(query);
-            while(rs.next()){
-                JSONObject eachItem= new JSONObject();
+            holdConnection();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                JSONObject eachItem = new JSONObject();
                 eachItem.put("dname", rs.getString("dname"));
                 eachItem.put("iname", rs.getString("iname"));
                 eachItem.put("count", rs.getInt("remain_count"));
                 items.add(eachItem);
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.err.println("! SQL ERROR (getItemsOfCategory) : " + e.getMessage());
         }
@@ -117,16 +122,18 @@ public class ItemDao extends Dao {
         JSONArray items = new JSONArray();
         String query = "SELECT d.dname, i.iname, i.remain_count " +
                 "FROM DEPARTMENT d, CATEGORY c, ITEM i " +
-                "where c.cid = i.category_cid and i.did = d.did and d.dname = '"+dname+"' ";
+                "where c.cid = i.category_cid and i.did = d.did and d.dname = '" + dname + "' ";
         try {
-            ResultSet rs = stmt.executeQuery(query);
-            while(rs.next()){
-                JSONObject eachItem= new JSONObject();
+            holdConnection();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                JSONObject eachItem = new JSONObject();
                 eachItem.put("dname", rs.getString("dname"));
                 eachItem.put("iname", rs.getString("iname"));
                 eachItem.put("count", rs.getInt("remain_count"));
                 items.add(eachItem);
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.err.println("! SQL ERROR (getItemsOfCategory) : " + e.getMessage());
         }

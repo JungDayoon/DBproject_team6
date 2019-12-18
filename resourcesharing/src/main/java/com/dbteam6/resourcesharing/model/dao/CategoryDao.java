@@ -1,8 +1,10 @@
 package com.dbteam6.resourcesharing.model.dao;
 
+import com.dbteam6.resourcesharing.model.DBconfig;
 import com.dbteam6.resourcesharing.model.dto.CategoryDto;
 import net.minidev.json.JSONArray;
 
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -24,11 +26,13 @@ public class CategoryDao extends Dao {
     private JSONArray executeQuery(String query) {
         JSONArray jsonResults = new JSONArray();
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            holdConnection();
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 CategoryDto Category = new CategoryDto(rs.getInt("cid"), rs.getString("cname"));
                 jsonResults.add(Category.toJSONObject());
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }

@@ -24,11 +24,13 @@ public class DeptDao extends Dao {
     private JSONArray executeQuery(String query) {
         JSONArray jsonResults = new JSONArray();
         try {
+            holdConnection();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 DepartmentDto dept = new DepartmentDto(rs.getInt("did"), rs.getString("dname"));
                 jsonResults.add(dept.toJSONObject());
             }
+            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }
