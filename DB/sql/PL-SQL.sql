@@ -27,7 +27,7 @@ END;
 
 /*item update 프로시저, item이 이미 존재한다면 remain_count만 Update, item이 존재하지 않는다면 Insert*/
 /
-create or replace procedure update_item(item_name IN varchar2,item_count IN INT, item_dept IN varchar2, item_category IN varchar2)
+create or replace procedure add_item(item_name IN varchar2,item_count IN INT, item_dept IN varchar2, item_category IN varchar2)
 IS
     v_iid INT;
 BEGIN
@@ -153,4 +153,24 @@ BEGIN
         insert into borrow  values(p_uuid, p_iid, p_count, to_char(sysdate,'YY-MM-DD'), to_char(sysdate+7,'YY-MM-DD'));
     END IF;
     CLOSE c_cursor;
+END;
+
+/*item 의 수량을 수정할때 음수면 에러, 양수면 수정, 0이면 빌려간사람이 있다면 0 빌려간 사람이 없다면 삭제*/
+create or replace procedure modify_item(item_iid IN INT,item_count IN INT)
+IS
+    v_remain INT;
+    v_count INT;
+BEGIN
+    IF item_count < 0 THEN
+        raise_application_error(-20001,'범위 에러');
+    ELSIF item_count = 0 THEN
+        SELECT count(*) into v_count from borrow where borrow_iid = item_iid;
+        IF v_count = 0 THEN
+            delete from item where iid = item_iid;
+        ELSE
+            UPDATE ITEM set remain_count = item_count where iid = item_iid;
+        END IF;
+    ELSE
+        UPDATE ITEM set remain_count = item_count where iid = item_iid;
+    END IF;
 END;
