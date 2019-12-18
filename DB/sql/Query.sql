@@ -33,8 +33,8 @@ INSERT INTO USERS VALUES(2015114398,'이용호','ID', FUNC_MD5_ENCRYPTION('PASSW
     WHERE dname = '컴퓨터학부')
 );
 
-/*유저가 물건을 빌림(user의 uid, item의 iid, 빌릴 개수, 시작날짜(YY-MM-DD타입), 반납날짜(YY-MM-DD타입)) // 자동으로 item의 remain_count 수정*/
-INSERT INTO borrow VALUES(2015114398, 1, 10, '19-12-20', '19-12-29');
+/*유저가 물건을 빌림(user의 uid, item의 iid, 빌릴 개수, 날짜는 오늘부터 7일뒤 반납 // 자동으로 item의 remain_count 수정*/
+exec insert_borrow(2015114398, 2, 1);
 
 /*유저가 빌렸던 물건을더 빌림, stat_date와 end_date는 고정*/
 update borrow set count = 0 where borrow_uuid = 2015114398 and borrow_iid = 2;

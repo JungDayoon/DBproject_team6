@@ -90,3 +90,67 @@ ENCRYPTED_STRING    VARCHAR2(128);
         
         RETURN ENCRYPTED_STRING;
  END FUNC_MD5_ENCRYPTION;
+
+/*borrow table에 변화가 있을때 마다 MEMO table에 로그 저장*/
+create or replace trigger borrow_log
+after insert or delete or update of count on borrow
+for each row
+declare
+    v_u_dname varchar2(45);
+    v_uname   varchar2(45);
+    v_i_dname   varchar2(45);
+    v_iname varchar2(45);
+    v_count   int;
+    v_start_date  varchar2(45);
+    v_end_date    varchar2(45);
+begin
+    if inserting then
+        select dname into v_u_dname from department where did = (select did from users where uuid = :new.borrow_uuid);
+        select uname into v_uname from users where uuid = :new.borrow_uuid;
+        select dname into v_i_dname from department where did = (select did from item where iid = :new.borrow_iid);
+        select iname into v_iname from item where iid = :new.borrow_iid;
+        v_count := :new.count;
+        v_start_date := :new.start_date;
+        v_end_date := :new.end_date;
+        
+        insert into memo values(sysdate,'신청',v_u_dname,v_uname,v_i_dname,v_iname,v_count,v_start_date,v_end_date);
+    elsif updating then
+        select dname into v_u_dname from department where did = (select did from users where uuid = :new.borrow_uuid);
+        select uname into v_uname from users where uuid = :new.borrow_uuid;
+        select dname into v_i_dname from department where did = (select did from item where iid = :new.borrow_iid);
+        select iname into v_iname from item where iid = :new.borrow_iid;
+        v_count := :new.count;
+        v_start_date := :new.start_date;
+        v_end_date := :new.end_date;
+        
+        insert into memo values(sysdate,'수정',v_u_dname,v_uname,v_i_dname,v_iname,v_count,v_start_date,v_end_date);
+    else
+        select dname into v_u_dname from department where did = (select did from users where uuid = :old.borrow_uuid);
+        select uname into v_uname from users where uuid = :old.borrow_uuid;
+        select dname into v_i_dname from department where did = (select did from item where iid = :old.borrow_iid);
+        select iname into v_iname from item where iid = :old.borrow_iid;
+        v_count := :old.count;
+        v_start_date := :old.start_date;
+        v_end_date := :old.end_date;
+        
+        insert into memo values(sysdate,'반납',v_u_dname,v_uname,v_i_dname,v_iname,v_count,v_start_date,v_end_date);
+    end if;
+end;
+
+
+/*물건을 빌릴떄 borrow 테이블 isnert를 위한 프로시저*/
+create or replace procedure insert_borrow (p_uuid IN int, p_iid IN int, p_count IN int)
+IS
+    CURSOR c_cursor IS select borrow_uuid, borrow_iid from borrow where borrow_uuid = p_uuid and borrow_iid = p_iid;
+    v_uuid  borrow.borrow_uuid%type;
+    v_iid   borrow.borrow_iid%type;
+BEGIN
+    OPEN c_cursor;
+    FETCH c_cursor INTO v_uuid, v_iid;
+    IF(c_cursor%FOUND)THEN
+        update borrow set count = count + p_count where borrow_uuid = p_uuid and borrow_iid = p_iid;
+    ELSE
+        insert into borrow  values(p_uuid, p_iid, p_count, to_char(sysdate,'YY-MM-DD'), to_char(sysdate+7,'YY-MM-DD'));
+    END IF;
+    CLOSE c_cursor;
+END;

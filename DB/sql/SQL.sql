@@ -1,16 +1,16 @@
 CREATE TABLE department(
-  did INT,  /*ÇÐ°úÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  dname VARCHAR(45), /*ÇÐ°úÀÇ ÀÌ¸§*/
+  did INT,  /*í•™ê³¼ì˜ ì‹ë³„ìž(PRIMARY KEY)*/
+  dname VARCHAR(45), /*í•™ê³¼ì˜ ì´ë¦„*/
   
   PRIMARY KEY (did)
   );
 
 CREATE TABLE users(
-  uuid INT,  /*»ç¿ëÀÚÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  uname VARCHAR(45), /*»ç¿ëÀÚÀÇ ÀÌ¸§*/
-  pwd VARCHAR(45), /*»ç¿ëÀÚÀÇ ºñ¹Ð¹øÈ£*/
-  admin INT, /*»ç¿ëÀÚÀÇ admin À¯¹Â(1 = admin, 0 = user)*/
-  did INT NULL, /*»ç¿ëÀÚÀÇ ÇÐ°ú ½Äº°ÀÚ (FOREIGN KEY)*/
+  uuid INT,  /*ì‚¬ìš©ìžì˜ ì‹ë³„ìž(PRIMARY KEY)*/
+  uname VARCHAR(45), /*ì‚¬ìš©ìžì˜ ì´ë¦„*/
+  pwd VARCHAR(45), /*ì‚¬ìš©ìžì˜ ë¹„ë°€ë²ˆí˜¸*/
+  admin INT, /*ì‚¬ìš©ìžì˜ admin ìœ ë®¤(1 = admin, 0 = user)*/
+  did INT NULL, /*ì‚¬ìš©ìžì˜ í•™ê³¼ ì‹ë³„ìž (FOREIGN KEY)*/
   
   PRIMARY KEY (uuid),
   CONSTRAINT users_ref1
@@ -19,18 +19,18 @@ CREATE TABLE users(
     );
 
 CREATE TABLE category(
-  cid INT, /*Ä«Å×°í¸®ÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  cname VARCHAR(45) UNIQUE, /*Ä«Å×°í¸®ÀÇ ÀÌ¸§ (UNIQUE)*/
+  cid INT, /*ì¹´í…Œê³ ë¦¬ì˜ ì‹ë³„ìž(PRIMARY KEY)*/
+  cname VARCHAR(45) UNIQUE, /*ì¹´í…Œê³ ë¦¬ì˜ ì´ë¦„ (UNIQUE)*/
   
   PRIMARY KEY (cid)
   );
 
 CREATE TABLE item(
-  iid INT,  /*¾ÆÀÌÅÛÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  iname VARCHAR(45), /*¾ÆÀÌÅÛÀÇ ÀÌ¸§*/
-  category_cid INT not null, /*¾ÆÀÌÅÛÀÇ Ä«Å×°í¸® ½Äº°ÀÚ(FOREIGN KEY)*/
-  remain_count INT, /*¾ÆÀÌÅÛÀÇ ³²Àº ¼ö·®*/
-  did INT, /*¾ÆÀÌÅÛÀÇ ¼Ò¼Ó ÇÐ°ú ½Äº°ÀÚ(FOREIGN KEY)*/
+  iid INT,  /*ì•„ì´í…œì˜ ì‹ë³„ìž(PRIMARY KEY)*/
+  iname VARCHAR(45), /*ì•„ì´í…œì˜ ì´ë¦„*/
+  category_cid INT not null, /*ì•„ì´í…œì˜ ì¹´í…Œê³ ë¦¬ ì‹ë³„ìž(FOREIGN KEY)*/
+  remain_count INT, /*ì•„ì´í…œì˜ ë‚¨ì€ ìˆ˜ëŸ‰*/
+  did INT, /*ì•„ì´í…œì˜ ì†Œì† í•™ê³¼ ì‹ë³„ìž(FOREIGN KEY)*/
   
   PRIMARY KEY (iid),
   CONSTRAINT item_ref1
@@ -42,11 +42,11 @@ CREATE TABLE item(
  );
 
 CREATE TABLE borrow(
-  borrow_uuid INT, /*°¢ °øÀ¯ÀÇ ºô·Á°£ »ç¶÷ ½Äº°ÀÚ(FOREIGN KEY)*/
-  borrow_iid INT, /*°¢ °øÀ¯ÀÇ ¾ÆÀÌÅÛ ½Äº°ÀÚ*/
-  count INT, /*°¢ °øÀ¯¹°°ÇÀÇ °³¼ö*/
-  start_date VARCHAR(45), /*°¢ °øÀ¯ÀÇ ½ÃÀÛ ³¯Â¥*/
-  end_date VARCHAR(45), /*°¢ °øÀ¯ÀÇ ¹Ý³³ ³¯Â¥*/
+  borrow_uuid INT, /*ê° ê³µìœ ì˜ ë¹Œë ¤ê°„ ì‚¬ëžŒ ì‹ë³„ìž(FOREIGN KEY)*/
+  borrow_iid INT, /*ê° ê³µìœ ì˜ ì•„ì´í…œ ì‹ë³„ìž*/
+  count INT, /*ê° ê³µìœ ë¬¼ê±´ì˜ ê°œìˆ˜*/
+  start_date VARCHAR(45), /*ê° ê³µìœ ì˜ ì‹œìž‘ ë‚ ì§œ*/
+  end_date VARCHAR(45), /*ê° ê³µìœ ì˜ ë°˜ë‚© ë‚ ì§œ*/
   
   CONSTRAINT borrow_ref2
     FOREIGN KEY (borrow_iid)
@@ -56,319 +56,128 @@ CREATE TABLE borrow(
     REFERENCES users (uuid),
   PRIMARY KEY (borrow_iid, borrow_uuid)
     );
+
+  create table memo(
+    time    date,
+    func    varchar2(45),
     
-CREATE SEQUENCE AUTO_PK_DEPARTMENT START WITH 1 INCREMENT BY 1; /*DEPARTMENT primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_CATEGORY START WITH 1 INCREMENT BY 1; /*CATEGORY primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_ITEM START WITH 1 INCREMENT BY 1; /*ITEM primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_ADMIN START WITH 1 INCREMENT BY 1; /*USER(ADMIN) primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
+    u_dname varchar2(45),
+    uname   varchar2(45),
     
-/*DEPARTMENT(ÇÐ°ú)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ÄÄÇ»ÅÍÇÐºÎ'); 
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ÀüÀÚ°øÇÐºÎ');
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'Àü±â°øÇÐ°ú');
-
-/*CATEGORY(Ä«Å×°í¸®)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '¾ÆµÎÀÌ³ë');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '°¡±¸');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'À½Çâ±â±â');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'Àå¼Ò');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '±âÅ¸');
-
-/*USERS(À¯Àú)Å×ÀÌºí ÃÊ±âÈ­ (¾îµå¹Î)*/
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'admin','admin', 1 , null);
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ÄÄÇ»ÅÍÇÐºÎ','ÄÄÇ»ÅÍÇÐºÎ', 1 , 
-    (SELECT did 
-    FROM DEPARTMENT
-    WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ÀüÀÚ°øÇÐºÎ','ÀüÀÚ°øÇÐºÎ', 1 , 
-    (SELECT did 
-    FROM DEPARTMENT
-    WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'Àü±â°øÇÐ°ú','Àü±â°øÇÐ°ú', 1 , 
-    (SELECT did 
-    FROM DEPARTMENT
-    WHERE dname = 'Àü±â°øÇÐ°ú')
-);
-
-/*USERS(À¯Àú)Å×ÀÌºí ÃÊ±âÈ­ (»ç¿ëÀÚ)*/
-INSERT INTO USERS VALUES(2015114398,'ÀÌ¿ëÈ£','test', 0 , 
-    (SELECT did 
-    FROM DEPARTMENT
-    WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-
-/*ITEM(¾ÆÀÌÅÛ)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3A+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 4B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¿ì³ë', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ·¹¿À³ª¸£µµ', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¿ì³ë', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ·¹¿À³ª¸£µµ', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-
-/*Ä«Å×°í¸®¸¶´Ù ¾ÆÀÌÅÛ Á¾·ù¿Í ³²Àº °³¼ö*/
-SELECT d.dname, c.cname, i.iname , i.remain_count
-FROM DEPARTMENT d, CATEGORY c, ITEM i
-where c.cid = i.category_cid and i.did = d.did and c.cname='¶óÁîº£¸®ÆÄÀÌ';
-
-/*ÇÐ°ú¸¶´ÙÀÇ ¾ÆÀÌÅÛ Á¾·ù¿Í ³²Àº °³¼ö*/
-SELECT d.dname, c.cname, i.iname , i.remain_count
-FROM DEPARTMENT d, CATEGORY c, ITEM i
-where c.cid = i.category_cid and i.did = d.did and d.dname = 'ÀüÀÚ°øÇÐºÎ';
-
-/*¾ÆÀÌÅÛ¸¶´ÙÀÇ ÇÐ°ú Á¾·ù¿Í ³²Àº °³¼ö*/
-SELECT d.dname, c.cname, i.iname , i.remain_count
-FROM DEPARTMENT d, CATEGORY c, ITEM i
-where c.cid = i.category_cid and i.did = d.did and i.iname = '¶óÁîº£¸®ÆÄÀÌ 3B+';
-
-
-CREATE TABLE department(
-  did INT,  /*ÇÐ°úÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  dname VARCHAR(45), /*ÇÐ°úÀÇ ÀÌ¸§*/
-  
-  PRIMARY KEY (did)
+    i_dname   varchar2(45),
+    iname varchar2(45),
+    
+    count   int,
+    start_date  varchar2(45),
+    end_date    varchar2(45)
   );
-
-CREATE TABLE users(
-  uuid INT,  /*»ç¿ëÀÚÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  uname VARCHAR(45), /*»ç¿ëÀÚÀÇ ÀÌ¸§*/
-  pwd VARCHAR(45), /*»ç¿ëÀÚÀÇ ºñ¹Ð¹øÈ£*/
-  admin INT, /*»ç¿ëÀÚÀÇ admin À¯¹Â(1 = admin, 0 = user)*/
-  did INT NULL, /*»ç¿ëÀÚÀÇ ÇÐ°ú ½Äº°ÀÚ (FOREIGN KEY)*/
-  
-  PRIMARY KEY (uuid),
-  CONSTRAINT users_ref1
-    FOREIGN KEY (did)
-    REFERENCES department (did)
-    );
-
-CREATE TABLE category(
-  cid INT, /*Ä«Å×°í¸®ÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  cname VARCHAR(45) UNIQUE, /*Ä«Å×°í¸®ÀÇ ÀÌ¸§ (UNIQUE)*/
-  
-  PRIMARY KEY (cid)
-  );
-
-CREATE TABLE item(
-  iid INT,  /*¾ÆÀÌÅÛÀÇ ½Äº°ÀÚ(PRIMARY KEY)*/
-  iname VARCHAR(45), /*¾ÆÀÌÅÛÀÇ ÀÌ¸§*/
-  category_cid INT, /*¾ÆÀÌÅÛÀÇ Ä«Å×°í¸® ½Äº°ÀÚ(FOREIGN KEY)*/
-  remain_count INT, /*¾ÆÀÌÅÛÀÇ ³²Àº ¼ö·®*/
-  did INT, /*¾ÆÀÌÅÛÀÇ ¼Ò¼Ó ÇÐ°ú ½Äº°ÀÚ(FOREIGN KEY)*/
-  
-  PRIMARY KEY (iid),
-  CONSTRAINT item_ref1
-    FOREIGN KEY (did)
-    REFERENCES department(did),
-  CONSTRAINT item_ref2
-    FOREIGN KEY (category_cid)
-    REFERENCES category (cid)
- );
-
-CREATE TABLE borrow(
-  borrow_uuid INT, /*°¢ °øÀ¯ÀÇ ºô·Á°£ »ç¶÷ ½Äº°ÀÚ(FOREIGN KEY)*/
-  borrow_iid INT, /*°¢ °øÀ¯ÀÇ ¾ÆÀÌÅÛ ½Äº°ÀÚ*/
-  count INT, /*°¢ °øÀ¯¹°°ÇÀÇ °³¼ö*/
-  start_date VARCHAR(45), /*°¢ °øÀ¯ÀÇ ½ÃÀÛ ³¯Â¥*/
-  end_date VARCHAR(45), /*°¢ °øÀ¯ÀÇ ¹Ý³³ ³¯Â¥*/
-  
-  CONSTRAINT borrow_ref2
-    FOREIGN KEY (borrow_iid)
-    REFERENCES item (iid),
-  CONSTRAINT borrow_ref3
-    FOREIGN KEY (borrow_uuid)
-    REFERENCES users (uuid),
-  PRIMARY KEY (borrow_iid, borrow_uuid)
-    );
     
-CREATE SEQUENCE AUTO_PK_DEPARTMENT START WITH 1 INCREMENT BY 1; /*DEPARTMENT primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_CATEGORY START WITH 1 INCREMENT BY 1; /*CATEGORY primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_ITEM START WITH 1 INCREMENT BY 1; /*ITEM primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
-CREATE SEQUENCE AUTO_PK_ADMIN START WITH 1 INCREMENT BY 1; /*USER(ADMIN) primary key ÀÚµ¿ Áõ°¡ ½ÃÄý½º*/
+CREATE SEQUENCE AUTO_PK_DEPARTMENT START WITH 1 INCREMENT BY 1; /*DEPARTMENT primary key ìžë™ ì¦ê°€ ì‹œí€¸ìŠ¤*/
+CREATE SEQUENCE AUTO_PK_CATEGORY START WITH 1 INCREMENT BY 1; /*CATEGORY primary key ìžë™ ì¦ê°€ ì‹œí€¸ìŠ¤*/
+CREATE SEQUENCE AUTO_PK_ITEM START WITH 1 INCREMENT BY 1; /*ITEM primary key ìžë™ ì¦ê°€ ì‹œí€¸ìŠ¤*/
+CREATE SEQUENCE AUTO_PK_ADMIN START WITH 1 INCREMENT BY 1; /*USER(ADMIN) primary key ìžë™ ì¦ê°€ ì‹œí€¸ìŠ¤*/
     
-/*DEPARTMENT(ÇÐ°ú)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ÄÄÇ»ÅÍÇÐºÎ'); 
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ÀüÀÚ°øÇÐºÎ');
-INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'Àü±â°øÇÐ°ú');
+/*DEPARTMENT(í•™ê³¼)í…Œì´ë¸” ì´ˆê¸°í™”*/
+INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ì»´í“¨í„°í•™ë¶€'); 
+INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ì „ìžê³µí•™ë¶€');
+INSERT INTO DEPARTMENT VALUES(AUTO_PK_DEPARTMENT.NEXTVAL, 'ì „ê¸°ê³µí•™ê³¼');
 
-/*CATEGORY(Ä«Å×°í¸®)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '¾ÆµÎÀÌ³ë');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '°¡±¸');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'À½Çâ±â±â');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'Àå¼Ò');
-INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, '±âÅ¸');
+/*CATEGORY(ì¹´í…Œê³ ë¦¬)í…Œì´ë¸” ì´ˆê¸°í™”*/
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´');
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ì•„ë‘ì´ë…¸');
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ê°€êµ¬');
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ìŒí–¥ê¸°ê¸°');
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ìž¥ì†Œ');
+INSERT INTO CATEGORY VALUES(AUTO_PK_CATEGORY.NEXTVAL, 'ê¸°íƒ€');
 
-/*USERS(À¯Àú)Å×ÀÌºí ÃÊ±âÈ­ (¾îµå¹Î)*/
+/*USERS(ìœ ì €)í…Œì´ë¸” ì´ˆê¸°í™” (ì–´ë“œë¯¼)*/
 INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'admin','admin', 1 , null);
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ÄÄÇ»ÅÍÇÐºÎ','ÄÄÇ»ÅÍÇÐºÎ', 1 , 
+INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ì»´í“¨í„°í•™ë¶€','ì»´í“¨í„°í•™ë¶€', 1 , 
     (SELECT did 
     FROM DEPARTMENT
-    WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ÀüÀÚ°øÇÐºÎ','ÀüÀÚ°øÇÐºÎ', 1 , 
+INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ì „ìžê³µí•™ë¶€','ì „ìžê³µí•™ë¶€', 1 , 
     (SELECT did 
     FROM DEPARTMENT
-    WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
+    WHERE dname = 'ì „ìžê³µí•™ë¶€')
 );
-INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'Àü±â°øÇÐ°ú','Àü±â°øÇÐ°ú', 1 , 
+INSERT INTO USERS VALUES(AUTO_PK_ADMIN.NEXTVAL,'ì „ê¸°ê³µí•™ê³¼','ì „ê¸°ê³µí•™ê³¼', 1 , 
     (SELECT did 
     FROM DEPARTMENT
-    WHERE dname = 'Àü±â°øÇÐ°ú')
+    WHERE dname = 'ì „ê¸°ê³µí•™ê³¼')
 );
 
-/*USERS(À¯Àú)Å×ÀÌºí ÃÊ±âÈ­ (»ç¿ëÀÚ)*/
-INSERT INTO USERS VALUES(2015114398,'ÀÌ¿ëÈ£','test', 0 , 
+/*USERS(ìœ ì €)í…Œì´ë¸” ì´ˆê¸°í™” (ì‚¬ìš©ìž)*/
+INSERT INTO USERS VALUES(2015114398,'ì´ìš©í˜¸','test', 0 , 
     (SELECT did 
     FROM DEPARTMENT
-    WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
 
-/*ITEM(¾ÆÀÌÅÛ)Å×ÀÌºí ÃÊ±âÈ­*/
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+/*ITEM(ì•„ì´í…œ)í…Œì´ë¸” ì´ˆê¸°í™”*/
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3B+', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3B', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3A+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3A+', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 4B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 4B', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ ¸ðµ¨ Zero', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ì•„ë‘ì´ë…¸ ìš°ë…¸', 
+    (SELECT cid FROM category where cname = 'ì•„ë‘ì´ë…¸'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ ¸ðµ¨ Zero W/WH', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ì•„ë‘ì´ë…¸ ë ˆì˜¤ë‚˜ë¥´ë„', 
+    (SELECT cid FROM category where cname = 'ì•„ë‘ì´ë…¸'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì»´í“¨í„°í•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'LCD 1602 ¸ðµâ', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3B+', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì „ìžê³µí•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¿ì³ë', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3B', 
+    (SELECT cid FROM category where cname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì „ìžê³µí•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ·¹¿À³ª¸£µµ', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ì•„ë‘ì´ë…¸ ìš°ë…¸', 
+    (SELECT cid FROM category where cname = 'ì•„ë‘ì´ë…¸'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì „ìžê³µí•™ë¶€')
 );
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë 101', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
+INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, 'ì•„ë‘ì´ë…¸ ë ˆì˜¤ë‚˜ë¥´ë„', 
+    (SELECT cid FROM category where cname = 'ì•„ë‘ì´ë…¸'),
     10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ·Îº¿', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ESPLORA', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¸¶ÀÌÅ©·Î', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ³ª³ë', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¹Ì´Ï', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë Á¦·Î', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÄÄÇ»ÅÍÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B+', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¶óÁîº£¸®ÆÄÀÌ 3B', 
-    (SELECT cid FROM category where cname = '¶óÁîº£¸®ÆÄÀÌ'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ¿ì³ë', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
-);
-INSERT INTO ITEM VALUES(AUTO_PK_ITEM.NEXTVAL, '¾ÆµÎÀÌ³ë ·¹¿À³ª¸£µµ', 
-    (SELECT cid FROM category where cname = '¾ÆµÎÀÌ³ë'),
-    10, 
-    (SELECT did FROM department WHERE dname = 'ÀüÀÚ°øÇÐºÎ')
+    (SELECT did FROM department WHERE dname = 'ì „ìžê³µí•™ë¶€')
 );
 
+/*ì¹´í…Œê³ ë¦¬ë§ˆë‹¤ ì•„ì´í…œ ì¢…ë¥˜ì™€ ë‚¨ì€ ê°œìˆ˜*/
+SELECT d.dname, c.cname, i.iname , i.remain_count
+FROM DEPARTMENT d, CATEGORY c, ITEM i
+where c.cid = i.category_cid and i.did = d.did and c.cname='ë¼ì¦ˆë² ë¦¬íŒŒì´';
+
+/*í•™ê³¼ë§ˆë‹¤ì˜ ì•„ì´í…œ ì¢…ë¥˜ì™€ ë‚¨ì€ ê°œìˆ˜*/
+SELECT d.dname, c.cname, i.iname , i.remain_count
+FROM DEPARTMENT d, CATEGORY c, ITEM i
+where c.cid = i.category_cid and i.did = d.did and d.dname = 'ì „ìžê³µí•™ë¶€';
+
+/*ì•„ì´í…œë§ˆë‹¤ì˜ í•™ê³¼ ì¢…ë¥˜ì™€ ë‚¨ì€ ê°œìˆ˜*/
+SELECT d.dname, c.cname, i.iname , i.remain_count
+FROM DEPARTMENT d, CATEGORY c, ITEM i
+where c.cid = i.category_cid and i.did = d.did and i.iname = 'ë¼ì¦ˆë² ë¦¬íŒŒì´ 3B+';
