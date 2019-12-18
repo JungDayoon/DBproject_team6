@@ -27,7 +27,7 @@ FROM DEPARTMENT d, CATEGORY c, ITEM i
 where c.cid = i.category_cid and i.did = d.did and d.dname = '컴퓨터학부' and c.cname = '라즈베리파이';
 
 /*사용자 추가*/
-INSERT INTO USERS VALUES(2015114398,'이용호','test', 0 , 
+INSERT INTO USERS VALUES(2015114398,'이용호','ID', FUNC_MD5_ENCRYPTION('PASSWORD') , 
     (SELECT did 
     FROM DEPARTMENT
     WHERE dname = '컴퓨터학부')
