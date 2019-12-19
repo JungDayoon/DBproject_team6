@@ -1,15 +1,14 @@
+var ipadr = "192.168.43.113";
 var category_name = new Array();
 var admin;
 var dname;
 var selected_cname;
-var d1 = "컴퓨터학부"
-var d2 = "전기공학과"
-var d3 = "전자공학부"
+var checked_depts = [];
 /* URL parameter로 유저 정보 획득 */
 var userId = new URLSearchParams(window.location.search).get('userid');
 $.ajax(
     {
-        url: "http://192.168.43.113:8080/users/" + userId,
+        url: "http://"+ipadr+":8080/users/" + userId,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         data: {}
@@ -57,16 +56,28 @@ var renderTable = async function (uri) {
         $('#table_head').html(thead);
         $('#item_table').empty();
         for (var i = 0; i < data.length; i++) {
-            //console.log(data);
-            var rowItem = `<tr class='${data[i].dname} ${data[i].cname} item'>`
-            rowItem += "<td>" + data[i].iname + "</td>"
-            rowItem += "<td>" + data[i].dname + "</td>"
-            rowItem += "<td id = '" + data[i].iid + "_count'>" + data[i].count + "</td>"
-            rowItem += "<td><input style='text-align: center;' type='text' placeholder='수량입력' id = '"+ data[i].iid +"_quantity'></td>"
-            rowItem += "<td><button class='btn btn-info borrow' id = '"+ data[i].iid +"'>빌리기</button></td>"
-            rowItem += "</tr>"
-            $('#item_table').append(rowItem)
-            idx++;
+
+            console.log($("#"+data[i].dname).is(":checked"));
+            if($("#"+data[i].dname).is(":checked")){
+                var rowItem = `<tr class='${data[i].dname} ${data[i].cname} item'>`
+                rowItem += "<td>" + data[i].iname + "</td>"
+                rowItem += "<td>" + data[i].dname + "</td>"
+                rowItem += "<td id = '" + data[i].iid + "_count'>" + data[i].count + "</td>"
+                rowItem += "<td><input style='text-align: center;' type='text' placeholder='수량입력' id = '"+ data[i].iid +"_quantity'></td>"
+                rowItem += "<td><button class='btn btn-info borrow' id = '"+ data[i].iid +"'>빌리기</button></td>"
+                rowItem += "</tr>"
+                $('#item_table').append(rowItem)
+                idx++;
+            }
+            // var rowItem = `<tr class='${data[i].dname} ${data[i].cname} item'>`
+            // rowItem += "<td>" + data[i].iname + "</td>"
+            // rowItem += "<td>" + data[i].dname + "</td>"
+            // rowItem += "<td id = '" + data[i].iid + "_count'>" + data[i].count + "</td>"
+            // rowItem += "<td><input style='text-align: center;' type='text' placeholder='수량입력' id = '"+ data[i].iid +"_quantity'></td>"
+            // rowItem += "<td><button class='btn btn-info borrow' id = '"+ data[i].iid +"'>빌리기</button></td>"
+            // rowItem += "</tr>"
+            // $('#item_table').append(rowItem)
+            // idx++;
         }
     });
 }
@@ -101,9 +112,12 @@ $(".dropdown-menu a").click(function(){
 
     // $("#add-name").text($("#selected").text());
 })
+
+
 $(".dept_list").change((event) =>{
     console.log('changed');
     var dept_name = event.currentTarget.id;
+    // checked_depts.push(dept_name);
     console.log(dept_name);
     if($(`#${dept_name}`).is(":checked")){
         $(`.${dept_name}`).show();

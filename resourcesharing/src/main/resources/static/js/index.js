@@ -1,3 +1,5 @@
+
+var ipadr = "192.168.43.113";
 var connId;
 var connName;
 var connMajor;
@@ -6,7 +8,7 @@ var infoStr;
 $("#signIn").click((event) => {
     $.ajax(
         {
-            url: "http://192.168.43.113:8080/services/login/" + $("#userID").val() + "/" + $("#userPW").val(),
+            url: "http://"+ipadr+":8080/services/login/" + $("#userID").val() + "/" + $("#userPW").val(),
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: {}

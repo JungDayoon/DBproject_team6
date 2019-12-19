@@ -1,7 +1,8 @@
+var ipadr = "192.168.43.113";
 var userId = new URLSearchParams(window.location.search).get('userid');
 $.ajax(
     {
-        url: "http://192.168.43.113:8080/users/" + userId,
+        url: "http://"+ipadr+":8080/users/" + userId,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         data: {}

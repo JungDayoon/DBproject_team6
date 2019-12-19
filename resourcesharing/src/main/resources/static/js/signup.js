@@ -1,9 +1,10 @@
 var id = null;
+var ipadr = "192.168.43.113";
 $("#idcheck").click(function (event) {
     id = $("#signupID").val();
     console.log(id);
     $.ajax({
-        url: "http://192.168.43.113:8080/services/checkdup/" + id,
+        url: "http://"+ipadr+":8080/services/checkdup/" + id,
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         data: {}

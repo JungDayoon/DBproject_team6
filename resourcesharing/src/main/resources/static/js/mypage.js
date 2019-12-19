@@ -1,10 +1,11 @@
+var ipadr = "192.168.43.113";
 var userId = new URLSearchParams(window.location.search).get('userid');
 var admin;
 var idx=1;
 var dname;
 $.ajax(
     {
-        url: "http://192.168.43.113:8080/users/" + userId,
+        url: "http://"+ipadr+":8080/users/" + userId,
         type: 'GET',
         contentType: "application/json; charset=utf-8",
         data: {}
@@ -29,7 +30,7 @@ $.ajax(
     if(admin == true)
     {
         $.ajax({
-            url: "http://192.168.43.113:8080/items/from/" + dname,
+            url: "http://"+ipadr+":8080/items/from/" + dname,
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             data: {}
