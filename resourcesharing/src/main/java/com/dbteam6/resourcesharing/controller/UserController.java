@@ -8,6 +8,8 @@ import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 
 @Controller
 public class UserController {
@@ -16,13 +18,13 @@ public class UserController {
     /*GET USERS*/
     @ResponseBody
     @GetMapping("/users")
-    public JSONArray getUsers() {
+    public JSONArray getUsers() throws SQLException {
         return uDao.findAll();
     }
 
     @ResponseBody
     @GetMapping("/users/{uuid}")
-    public JSONObject getUserById(@PathVariable("uuid") int uuid) {
+    public JSONObject getUserById(@PathVariable("uuid") int uuid) throws SQLException {
         JSONArray tempArr = uDao.getUserInfoById(uuid);
         if (tempArr.isEmpty()) {
             return null;
@@ -32,14 +34,14 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/users/{uuid}/myitems")
-    public JSONArray getMyItem(@PathVariable("uuid") int uuid){
+    public JSONArray getMyItem(@PathVariable("uuid") int uuid) throws SQLException {
         return iDao.getOnesItems(uuid);
     }
 
     /* CREATE USERS */
     @ResponseBody
     @PostMapping("/users/{uuid}/{uname}/{pwd}/{major}")
-    public int addUser(@PathVariable("uuid") int uuid, @PathVariable("uname") String uname, @PathVariable("pwd") String pwd, @PathVariable("major") String major) {
+    public int addUser(@PathVariable("uuid") int uuid, @PathVariable("uname") String uname, @PathVariable("pwd") String pwd, @PathVariable("major") String major) throws SQLException {
         System.out.println("@ REQUEST : [id]" + uuid + "try to signup");
         return uDao.addUser(uuid, uname, pwd, major);
     }
@@ -47,9 +49,9 @@ public class UserController {
     /* UPDATE USERS */
     @ResponseBody
     @PutMapping("/users/{uuid}/{field}/{new_val}")
-    public int updateUser(@PathVariable("uuid") int uuid, @PathVariable("field") String field, @PathVariable("new_val") String value) {
+    public int updateUser(@PathVariable("uuid") int uuid, @PathVariable("field") String field, @PathVariable("new_val") String value) throws SQLException {
         String condition = "uuid=" + uuid;
-        System.out.println(value);
+        System.out.println("[uuid] "+uuid+" update [field] "+field+" [value] " + value);
         if (field.equals("uname") || field.equals("pwd")) {
             value = "'" + value + "'";
         } else if (field.equals("admin")) {
@@ -67,7 +69,7 @@ public class UserController {
     /* DELETE USER */
     @ResponseBody
     @DeleteMapping("/users/{uuid}")
-    public int delUser(@PathVariable("uuid") int uuid) {
+    public int delUser(@PathVariable("uuid") int uuid) throws SQLException {
         String condition = "uuid=" + uuid;
         return uDao.deleteUser(condition);
     }

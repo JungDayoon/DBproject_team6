@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class BorrowDao extends Dao {
     private static BorrowDao instance = null;
 
-    private BorrowDao(){
+    private BorrowDao() {
         super();
         System.out.println("BorrowDao's JDBC driver is found");
     }
@@ -20,7 +20,7 @@ public class BorrowDao extends Dao {
         return instance;
     }
 
-    private JSONArray executeQuery(String query) {
+    private JSONArray executeQuery(String query) throws SQLException {
         JSONArray jsonResults = new JSONArray();
         try {
             holdConnection();
@@ -31,16 +31,18 @@ public class BorrowDao extends Dao {
             }
             releaseConnection();
         } catch (SQLException e) {
+            releaseConnection();
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
         }
         return jsonResults;
     }
 
-    public JSONArray findAll() {
+    public JSONArray findAll() throws SQLException {
         String query = "SELECT * FROM borrow";
         return executeQuery(query);
     }
-    public JSONArray findByCondition(String condition){
+
+    public JSONArray findByCondition(String condition) throws SQLException {
         String query = "SELECT * FROM borrow WHERE " + condition;
         return executeQuery(query);
     }

@@ -26,4 +26,8 @@ public class MainController {
     public String mypage() {
         return "mypage";
     }
+    @GetMapping("/modify_page")
+    public String modify_page() {
+        return "modify_page";
+    }
 }

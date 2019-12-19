@@ -35,7 +35,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbar">
-
+        <%-- 카테고리 네비게이션 --%>
         <ul class="navbar-nav mr-auto">
             <%
                 CategoryDao cDao = CategoryDao.getInstance();
@@ -71,12 +71,12 @@
             <%
                 DeptDao dDao = DeptDao.getInstance();
                 JSONArray departments = dDao.findAll();
-                for(Object dept : departments){
+                for (Object dept : departments) {
                     JSONObject eachDept = (JSONObject) dept;
-                    out.println("<li class='list-group-item'>"+
-                        "<div class='custom-control custom-checkbox dept-list'>"+
-                            "<input type='checkbox' checked id= '" + eachDept.get("dname") + "' class='custom-control-input'/>" + 
-                            "<label class='custom-control-label' for='" + eachDept.get("dname") + "'>" + eachDept.get("dname") +"</label></div></li>");
+                    out.println("<li class='list-group-item'>" +
+                            "<div class='custom-control custom-checkbox'>" +
+                            "<input type='checkbox' checked id= '" + eachDept.get("dname") + "' class='custom-control-input dept_list'/>" +
+                            "<label class='custom-control-label  dept-list' for='" + eachDept.get("dname") + "'>" + eachDept.get("dname") + "</label></div></li>");
                 }
             %>
         </ul>
@@ -87,11 +87,31 @@
 
 <div class="text-center bg-light m-3" id="contents" style="float: left;">
     <table class="table table-hover" id="table">
-        
-        <tbody id = "item_table">
+        <thead id="table_head">
+
+        </thead>
+        <%
+            out.println("<tr class='item' id ='add-item'>");
+            out.println("<td><input style='text-align: center;' type='text' placeholder='물품입력' id='add-iname'></td>");
+            out.println("<td id='admin-dname'></td>");
+            out.println("<td><div class = 'dropdown'><button class = 'btn btn-light dropdown-toggle' data-toggle = 'dropdown'><span id='add-cname'>'카테고리선택</span></button>");
+            out.println("<div class = 'dropdown-menu' >");
+            for (Object category : categorys) {
+                JSONObject eachCat = (JSONObject) category;
+                out.println("<a class = 'dropdown-item' href = '#'>" + eachCat.get("cname") + "</a>");
+            }
+            out.println("</div>");
+            out.println("</div>");
+            out.println("</td>");
+            out.println("<td><input style='text-align: center;' type='text' placeholder='수량입력' id='add-count'></td>");
+            out.println( "<td><button class='btn btn-danger' id='add-button'>추가하기</button></td>");
+            out.println("</tr>");
+        %>
+
+        <tbody id="item_table">
+
         </tbody>
     </table>
-    <button class="btn large btn-light">+</button> <!-- 이 버튼은 관리자만 보이게 하기 -->
 </div>
 <!-- 제이쿼리 자바스크립트 추가하기 -->
 

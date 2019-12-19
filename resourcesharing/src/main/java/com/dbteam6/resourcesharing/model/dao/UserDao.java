@@ -19,7 +19,7 @@ public class UserDao extends Dao {
         return instance;
     }
 
-    private JSONArray executeQuery(String query) {
+    private JSONArray executeQuery(String query) throws SQLException {
         JSONArray jsonResults = new JSONArray();
         try {
             holdConnection();
@@ -29,52 +29,53 @@ public class UserDao extends Dao {
                 user.setDname(rs.getString("dname"));
                 jsonResults.add(user.toJSONObject());
             }
-            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
+        } finally {
+
+            releaseConnection();
         }
         return jsonResults;
     }
 
-    public JSONArray findAll() {
+    public JSONArray findAll() throws SQLException {
         String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
                 "FROM users u, department d " +
                 "WHERE u.did = d.did";
         return executeQuery(query);
     }
 
-    public JSONArray findByCondition(String condition) {
+    public JSONArray findByCondition(String condition) throws SQLException {
         String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
                 "FROM users u, department d " +
                 "WHERE u.did = d.did and " + condition;
         return executeQuery(query);
     }
 
-    public JSONArray getUserInfoById(int uuid){
+    public JSONArray getUserInfoById(int uuid) throws SQLException {
         String query = "SELECT u.uuid, u.uname, u.pwd, u.admin, u.did, d.dname " +
                 "FROM users u, department d " +
                 "WHERE u.did = d.did and u.uuid="+uuid;
         return executeQuery(query);
     }
-    public int addUser(int uuid, String uname, String pwd, String major) {
-        String sql = "INSERT INTO users(uuid,uname,pwd,admin,did) "
+    public int addUser(int uuid, String uname, String pwd, String major) throws SQLException {
+        String sql = "INSERT INTO users(uuid,uname,pwd,did) "
                 + "VALUES("
                 + uuid + ",'"
-                + uname + "','"
-                + pwd + "',"
-                + "0 ,"
+                + uname + "',"
+                + "FUNC_MD5_ENCRYPTION('"+pwd + "'),"
                 + "(SELECT did FROM department WHERE dname='" + major +"')"
                 + ")";
         return executeSQL(sql);
     }
 
-    public int updateUser(String condition, String field, String value) {
-        String sql = "UPDATE users SET " + field + "=" + value + " WHERE " + condition;
+    public int updateUser(String condition, String field, String value) throws SQLException {
+        String sql = "UPDATE users SET " + field + "=" + "FUNC_MD5_ENCRYPTION("+value + ") WHERE " + condition;
         return executeSQL(sql);
     }
 
 
-    public int deleteUser(String condition) {
+    public int deleteUser(String condition) throws SQLException {
         String sql = "DELETE FROM users WHERE " + condition;
         return executeSQL(sql);
     }

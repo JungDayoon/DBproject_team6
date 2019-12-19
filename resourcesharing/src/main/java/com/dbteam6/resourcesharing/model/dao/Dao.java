@@ -7,6 +7,7 @@ import java.sql.*;
 public class Dao {
     protected Connection conn;
     protected Statement stmt;
+    protected CallableStatement cstmt;
     protected ResultSet rs;
 
     public Dao() {
@@ -43,16 +44,27 @@ public class Dao {
         }
     }
 
-    protected int executeSQL(String sql) {
+    protected int executeSQL(String sql) throws SQLException {
         int result = 0;
         try {
             holdConnection();
             System.out.println(sql);//test
             result = stmt.executeUpdate(sql);
-            releaseConnection();
         } catch (SQLException e) {
             System.err.println("! SQL ERROR (" + sql + ") : " + e.getMessage());
+        } finally {
+            releaseConnection();
         }
         return result;
     }
+//
+//    protected void executeProcedure(String proc_name)  {
+//        try {
+//            holdConnection();
+//            CallableStatement csmt = conn.prepareCall("{call functioname}")
+//            releaseConnection();
+//        } catch (SQLException e) {
+//            System.err.println("! SQL ERROR (" + proc_name + "): " + e.getMessage());
+//        }
+//    }
 }

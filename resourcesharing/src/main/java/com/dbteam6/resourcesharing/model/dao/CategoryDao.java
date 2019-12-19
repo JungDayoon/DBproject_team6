@@ -23,7 +23,7 @@ public class CategoryDao extends Dao {
         return instance;
     }
 
-    private JSONArray executeQuery(String query) {
+    private JSONArray executeQuery(String query) throws SQLException {
         JSONArray jsonResults = new JSONArray();
         try {
             holdConnection();
@@ -32,18 +32,19 @@ public class CategoryDao extends Dao {
                 CategoryDto Category = new CategoryDto(rs.getInt("cid"), rs.getString("cname"));
                 jsonResults.add(Category.toJSONObject());
             }
-            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
+        } finally {
+            releaseConnection();
         }
         return jsonResults;
     }
 
-    public JSONArray findAll() {
+    public JSONArray findAll() throws SQLException {
         String query = "SELECT * FROM category";
         return executeQuery(query);
     }
-    public JSONArray findByCondition(String condition){
+    public JSONArray findByCondition(String condition) throws SQLException {
         String query = "SELECT * FROM category WHERE " + condition;
         return executeQuery(query);
     }

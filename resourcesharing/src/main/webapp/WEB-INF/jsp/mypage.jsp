@@ -15,6 +15,8 @@
 <!-- 커스텀 CSS 추가하기 -->
 
 <link rel="stylesheet" href="/css/custom.css">
+
+</style>
 </head>
 
 <body>
@@ -35,31 +37,26 @@
     <div class="d-flex flex wrap">
        <div class="p-2 border bg-light"> 
            <div class="col-3"> 
-               <div class="card" style="width: 16rem;"> 
+               <div class="card" style="width: 20rem;"> 
                 <div class="card-body"> 
                     <h5 class="card-title">My Info</h5>
                      <p class="card-text" id="myinfo">
                      </p> 
-                     <a href="#" class="btn btn-primary">정보 수정</a> 
+                     <button class="btn btn-primary" id = "modify_btn">정보 수정</button> 
                 </div> 
                 </div> 
             </div> 
         </div> 
 
-    <div class = "p-2 border bg-ligh">
+    <div class = "p-2 border bg-ligh" >
             <div class="text-center bg-light m-3" id="contents" style="float: left;">
-                <table id = "myitem_table" class="table table-hover">
+                <strong id = "myitem_div"></strong>
+                <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>물품명</th>
-                        <th>대여학과</th>
-                        <th>대여한 수량</th>
-                        <th>대여날짜</th>
-                        <th>반납날짜</th>
+                    <tr id= "myitem_index">
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id = "myitem_table" >
                     </tbody>
                 </table>
             </div>

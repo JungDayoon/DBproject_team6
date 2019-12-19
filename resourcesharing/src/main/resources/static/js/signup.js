@@ -41,7 +41,7 @@ $("#signUp").click(function (event) {
     }).done(function (data) {
         console.log(data);
         alert("회원가입이 완료되었습니다.");
-        location.href = "main_page";
+        location.href = "/";
     });
 
 });

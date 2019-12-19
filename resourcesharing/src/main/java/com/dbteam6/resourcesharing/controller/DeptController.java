@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLException;
+
 @Controller
 public class DeptController {
     DeptDao dDao = DeptDao.getInstance();
@@ -30,7 +32,7 @@ public class DeptController {
     }
     @ResponseBody
     @GetMapping("/depts/have/{category_name}")
-    public JSONArray getDeptOfCategory(@PathVariable("category_name") String cname){
+    public JSONArray getDeptOfCategory(@PathVariable("category_name") String cname) throws SQLException {
         JSONArray depts = dDao.getDeptOfCategories(cname);
         return depts;
     }

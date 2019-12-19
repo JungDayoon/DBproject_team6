@@ -36,14 +36,14 @@
 
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     <div class="jumbotron text-center mb-0">
         <h1 class="display-4"> team6 project 입니다.</h1>
         <p class="lead"> 물품공유 웹사이트</p>
         <p>DB 팀 프로젝트로 제작된 물품공유 웹사이트 입니다</p>
     </div>
 </div>
-<div class="container-fluid" style="text-align: center; display:inline-block;">
+<div class="container-fluid" style="text-align: center; position: relative; display:inline-block; padding: 6px;">
     <div class="banner center-block col-md-4">
         <div class="container mt-5" style="display:inline; max-width: 500px;">
 

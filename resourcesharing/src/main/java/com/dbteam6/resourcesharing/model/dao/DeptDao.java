@@ -21,7 +21,7 @@ public class DeptDao extends Dao {
         return instance;
     }
 
-    private JSONArray executeQuery(String query) {
+    private JSONArray executeQuery(String query) throws SQLException {
         JSONArray jsonResults = new JSONArray();
         try {
             holdConnection();
@@ -30,9 +30,10 @@ public class DeptDao extends Dao {
                 DepartmentDto dept = new DepartmentDto(rs.getInt("did"), rs.getString("dname"));
                 jsonResults.add(dept.toJSONObject());
             }
-            releaseConnection();
         } catch (SQLException e) {
             System.out.println("! SQL ERROR (" + query + ") : " + e.getMessage());
+        } finally{
+            releaseConnection();
         }
         return jsonResults;
     }
@@ -40,20 +41,32 @@ public class DeptDao extends Dao {
 
     public JSONArray findAll() {
         String query = "SELECT * FROM department";
-        return executeQuery(query);
+        try {
+            return executeQuery(query);
+        } catch (SQLException e) {
+            System.err.println("! SQL ERROR (executeQuery): " + e.getMessage());
+            return null;
+        }
     }
 
     public JSONArray findByCondition(String condition) {
         String query = "SELECT * FROM users WHERE " + condition;
-        return executeQuery(query);
+        try {
+            return executeQuery(query);
+        } catch (SQLException e) {
+            System.err.println("! SQL ERROR (executeQuery): " + e.getMessage());
+            return null;
+        }
     }
 
-    public JSONArray getDeptOfCategories(String category_name){
+    public JSONArray getDeptOfCategories(String category_name) throws SQLException {
         String query = "SELECT d.did, d.dname " +
                 "FROM DEPARTMENT d, CATEGORY c, ITEM i " +
                 "WHERE c.cid = i.category_cid and i.did = d.did and c.cname='"+ category_name + "' " +
                 "GROUP BY d.dname;";
-        return executeQuery(query);
+
+            return executeQuery(query);
+
     }
 
 }
