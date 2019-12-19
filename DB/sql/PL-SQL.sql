@@ -139,7 +139,7 @@ end;
 
 
 /*물건을 빌릴떄 borrow 테이블 isnert를 위한 프로시저*/
-create or replace procedure insert_borrow (p_uuid IN int, p_iid IN int, p_count IN int)
+create or replace procedure add_borrow (p_uuid IN int, p_iid IN int, p_count IN int)
 IS
     CURSOR c_cursor IS select borrow_uuid, borrow_iid from borrow where borrow_uuid = p_uuid and borrow_iid = p_iid;
     v_uuid  borrow.borrow_uuid%type;
